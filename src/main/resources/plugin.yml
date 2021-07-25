@@ -1,0 +1,15 @@
+name: HeadDatabase
+main: de.pierreschwang.headdatabase.HeadDatabasePlugin
+version: 1.0
+api-version: 1.13
+
+commands:
+  headdatabase:
+    aliases:
+      - hdb
+
+permissions:
+  headdatabase.*:
+    children:
+      headdatabase.admin: true
+      headdatabase.use: true
