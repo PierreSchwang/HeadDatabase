@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class HeadDatabaseResolver {
@@ -33,8 +34,8 @@ public class HeadDatabaseResolver {
         this.plugin = plugin;
     }
 
-    public void downloadDatabase() {
-        downloadDatabase(0);
+    public void downloadDatabase(Consumer<Boolean> consumer) {
+        downloadDatabase(1, consumer);
     }
 
     /**
@@ -42,10 +43,11 @@ public class HeadDatabaseResolver {
      *
      * @param tryCount The current try to download the heads
      */
-    private void downloadDatabase(int tryCount) {
+    private void downloadDatabase(int tryCount, Consumer<Boolean> consumer) {
         // If max tries passed, disable ourself
-        if (tryCount >= MAX_TRIES) {
+        if (tryCount > MAX_TRIES) {
             plugin.getLogger().severe("Failed to download heads - " + (tryCount - 1) + " unsuccessful tries");
+            consumer.accept(false);
             return;
         }
         plugin.getLogger().info("Trying to download heads [Try " + tryCount + "/" + MAX_TRIES + "]");
@@ -64,7 +66,7 @@ public class HeadDatabaseResolver {
                     }
                     // Syntax: category;id;name;texture;recent (1, otherwise 0);tags (seperated by pipes)
                     List<String> data = Arrays.stream(line.split(";"))
-                            .map(s -> s.replace('\"', Character.MIN_VALUE).replace('-', '_'))
+                            .map(s -> s.replace("\"", "").replace('-', '_'))
                             .collect(Collectors.toList());
                     if (data.size() < 5) {
                         continue;
@@ -82,10 +84,11 @@ public class HeadDatabaseResolver {
             }
             Files.write(new Gson().toJson(heads).getBytes(StandardCharsets.UTF_8), plugin.getStorage().getLocalDatabase());
             plugin.getLogger().info("Updated local database");
+            consumer.accept(true);
         } catch (IOException e) {
-            e.printStackTrace();
             plugin.getLogger().warning("Try " + tryCount + " to download heads failed");
-            downloadDatabase(tryCount + 1);
+            e.printStackTrace();
+            downloadDatabase(tryCount + 1, consumer);
         } finally {
             if (connection != null)
                 connection.disconnect();

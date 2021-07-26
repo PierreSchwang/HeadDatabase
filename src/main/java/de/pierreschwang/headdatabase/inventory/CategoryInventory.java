@@ -5,6 +5,8 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import de.pierreschwang.headdatabase.HeadDatabasePlugin;
 import de.pierreschwang.headdatabase.dao.Category;
+import de.pierreschwang.headdatabase.util.SoundHelper;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +29,9 @@ public class CategoryInventory extends ChestGui {
             ItemStack stack = value.toItemStack(plugin.getLanguageHandler().getMessage("category." + value.name()));
             categoryPane.addItem(new GuiItem(stack, event -> {
                 event.setCancelled(true);
-                new CategorySkullsInventory(plugin, value, "yikes").show(event.getWhoClicked());
+                SoundHelper.playClickSound((Player) event.getWhoClicked());
+                new CategorySkullsInventory(plugin, value, plugin.getLanguageHandler().getMessage("inventory.skull.title"))
+                        .show(event.getWhoClicked());
             }), x, y);
             index++;
         }

@@ -30,6 +30,8 @@ public class HeadStorage {
     }
 
     public void load() throws IOException {
+        if (!localDatabase.exists())
+            return;
         this.heads = new Gson().fromJson(
                 new String(Files.readAllBytes(localDatabase.toPath()), StandardCharsets.UTF_8),
                 new TypeToken<Set<Head>>() {
