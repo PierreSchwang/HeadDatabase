@@ -3,6 +3,7 @@ package de.pierreschwang.headdatabase.inventory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
+import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import de.pierreschwang.headdatabase.HeadDatabasePlugin;
 import de.pierreschwang.headdatabase.dao.Category;
@@ -62,11 +63,23 @@ public class CategorySkullsInventory extends ChestGui {
             this.update();
         }), 0, 0);
         previousPagePane.setVisible(false);
-        if (skullPane.getPages() < 1) {
+        if (skullPane.getPages() < 2) {
             nextPagePane.setVisible(false);
         }
         addPane(previousPagePane);
         addPane(nextPagePane);
+        setBackground();
+    }
+
+    private void setBackground() {
+        ItemStack pane = ItemBuilder.normal(Material.GRAY_STAINED_GLASS_PANE).name("§r").build();
+        StaticPane background = new StaticPane(0, 0, 7, getRows(), Pane.Priority.LOWEST);
+        for (int x = 0; x < background.getLength(); x++) {
+            for (int y = getRows() - 1; y < getRows(); y++) {
+                background.addItem(new GuiItem(pane, event -> event.setCancelled(true)), x, y);
+            }
+        }
+        addPane(background);
     }
 
     private void navigate(int page) {
