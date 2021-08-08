@@ -1,5 +1,6 @@
 package de.pierreschwang.headdatabase.dao;
 
+import de.pierreschwang.headdatabase.util.ItemBuilder;
 import de.pierreschwang.headdatabase.util.SkullHelper;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,7 +32,7 @@ public enum Category {
     }
 
     public ItemStack toItemStack(String displayName) {
-        return SkullHelper.createSkull(texture);
+        return ItemBuilder.wrap(SkullHelper.createSkull(texture)).name(displayName).build();
     }
 
     public static Category byKey(String key) {

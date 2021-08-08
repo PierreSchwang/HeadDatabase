@@ -2,7 +2,6 @@ package de.pierreschwang.headdatabase.task;
 
 import de.pierreschwang.headdatabase.HeadDatabasePlugin;
 import de.pierreschwang.headdatabase.http.HeadDatabaseResolver;
-import de.pierreschwang.headdatabase.i18n.LanguageHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
@@ -28,14 +27,6 @@ public class ReloadTask extends BukkitRunnable {
     public void run() {
         plugin.getPendingReload().set(true);
         AtomicBoolean successful = new AtomicBoolean(true);
-        try {
-            LanguageHandler languageHandler = new LanguageHandler(plugin);
-            plugin.setLanguageHandler(languageHandler);
-        } catch (IOException e) {
-            successful.set(false);
-            plugin.getLogger().severe("An error occurred while initializing the language properties");
-            e.printStackTrace();
-        }
         new HeadDatabaseResolver(plugin).downloadDatabase(result -> {
             if (result) {
                 try {
