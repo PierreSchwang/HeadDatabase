@@ -97,7 +97,7 @@ public class PlayerHeadCommand {
             public void onFailure(@NotNull Throwable t) {
                 sender.sendMessage(plugin.getLanguageHandler().getMessage("playerhead.name.notfound", name));
             }
-        });
+        }, Runnable::run);
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -112,7 +112,7 @@ public class PlayerHeadCommand {
             public void onFailure(@NotNull Throwable t) {
                 sender.sendMessage(plugin.getLanguageHandler().getMessage("playerhead.uuid.notfound", uuid));
             }
-        });
+        }, Runnable::run);
     }
 
     private void giveMinecraftHeadByUrl(Player sender, String urlParam) {

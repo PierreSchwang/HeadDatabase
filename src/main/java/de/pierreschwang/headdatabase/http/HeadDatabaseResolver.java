@@ -23,14 +23,13 @@ import java.util.stream.Collectors;
 
 public class HeadDatabaseResolver {
 
-    private static final String SOURCE_URL = "https://minecraft-heads.com/csv/2020-01-31-IUgRbJoHRbVhjKnOlkmH/Custom-Head-DB.csv";
+    private static final String SOURCE_URL = "https://minecraft-heads.4lima.de/csv/2022-02-25-ZgFDreHnLiGvHdf3RFfgg/Custom-Head-DB.csv";
     private static final int MAX_TRIES = 10;
 
     private final HeadDatabasePlugin plugin;
     private final Set<Head> heads = new HashSet<>();
 
     public HeadDatabaseResolver(HeadDatabasePlugin plugin) {
-
         this.plugin = plugin;
     }
 
