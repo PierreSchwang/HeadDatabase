@@ -1,4 +1,4 @@
-name: HeadDatabase
+name: HeadDatabaseFree
 main: de.pierreschwang.headdatabase.HeadDatabasePlugin
 version: ${project.version}
 api-version: 1.14
